@@ -1,32 +1,5 @@
 import java.util.Scanner;
 
-class Task {
-    private String description;
-    private boolean isDone;
-
-    public Task(String description) {
-        this.description = description;
-        this.isDone = false; // default not done
-    }
-
-    public void markDone() {
-        this.isDone = true;
-    }
-
-    public void markNotDone() {
-        this.isDone = false;
-    }
-
-    public boolean isDone() {
-        return this.isDone;
-    }
-
-    @Override
-    public String toString() {
-        return (isDone ? "[X] " : "[ ] ") + description;
-    }
-}
-
 public class Monty {
     public static void main(String[] args) {
         String logo = " __  __             _          \n"
@@ -75,11 +48,52 @@ public class Monty {
                     System.out.println("   " + tasks[index]);
                     System.out.println("____________________________________________________________");
                 }
-            } else {
-                tasks[taskCount] = new Task(input);
+            } else if (input.startsWith("todo ")) {
+                String description = input.substring(5);
+                tasks[taskCount] = new ToDo(description);
                 taskCount++;
                 System.out.println("____________________________________________________________");
-                System.out.println(" added: " + input);
+                System.out.println(" Got it. I've added this task:");
+                System.out.println("   " + tasks[taskCount - 1]);
+                System.out.println(" Now you have " + taskCount + " tasks in the list.");
+                System.out.println("____________________________________________________________");
+            } else if (input.startsWith("deadline ")) {
+                String remaining = input.substring(9);
+                int byIndex = remaining.indexOf("/by ");
+                if (byIndex != -1) {
+                    String description = remaining.substring(0, byIndex).trim();
+                    String by = remaining.substring(byIndex + 4).trim();
+                    tasks[taskCount] = new Deadline(description, by);
+                    taskCount++;
+                    System.out.println("____________________________________________________________");
+                    System.out.println(" Got it. I've added this task:");
+                    System.out.println("   " + tasks[taskCount - 1]);
+                    System.out.println(" Now you have " + taskCount + " tasks in the list.");
+                    System.out.println("____________________________________________________________");
+                }
+            } else if (input.startsWith("event ")) {
+                String remaining = input.substring(6);
+                int fromIndex = remaining.indexOf("/from ");
+                int toIndex = remaining.indexOf("/to ");
+                if (fromIndex != -1 && toIndex != -1) {
+                    String description = remaining.substring(0, fromIndex).trim();
+                    String from = remaining.substring(fromIndex + 6, toIndex).trim();
+                    String to = remaining.substring(toIndex + 4).trim();
+                    tasks[taskCount] = new Event(description, from, to);
+                    taskCount++;
+                    System.out.println("____________________________________________________________");
+                    System.out.println(" Got it. I've added this task:");
+                    System.out.println("   " + tasks[taskCount - 1]);
+                    System.out.println(" Now you have " + taskCount + " tasks in the list.");
+                    System.out.println("____________________________________________________________");
+                }
+            } else {
+                tasks[taskCount] = new ToDo(input);
+                taskCount++;
+                System.out.println("____________________________________________________________");
+                System.out.println(" Got it. I've added this task:");
+                System.out.println("   " + tasks[taskCount - 1]);
+                System.out.println(" Now you have " + taskCount + " tasks in the list.");
                 System.out.println("____________________________________________________________");
             }
         }
