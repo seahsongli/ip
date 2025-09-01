@@ -1,11 +1,17 @@
 
-abstract class Task {
-    protected String description;
-    protected boolean isDone;
+public abstract class Task {
+    private static final String DONE_ICON = "[X]";
+    private static final String NOT_DONE_ICON = "[ ]";
+    
+    private final String description;
+    private boolean isDone;
 
     public Task(String description) {
-        this.description = description;
-        this.isDone = false; // default not done
+        if (description == null || description.trim().isEmpty()) {
+            throw new IllegalArgumentException("Task description cannot be null or empty");
+        }
+        this.description = description.trim();
+        this.isDone = false;
     }
 
     public void markDone() {
@@ -20,10 +26,18 @@ abstract class Task {
         return this.isDone;
     }
 
+    public String getDescription() {
+        return this.description;
+    }
+
     public abstract String getTaskType();
+
+    protected String getStatusIcon() {
+        return isDone ? DONE_ICON : NOT_DONE_ICON;
+    }
 
     @Override
     public String toString() {
-        return "[" + getTaskType() + "]" + (isDone ? "[X] " : "[ ] ") + description;
+        return "[" + getTaskType() + "]" + getStatusIcon() + " " + description;
     }
 }
