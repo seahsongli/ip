@@ -33,7 +33,7 @@ public class Parser {
         } else if (trimmedCommand.startsWith(COMMAND_EVENT)) {
             return parseEventCommand(trimmedCommand);
         } else {
-            return new AddCommand(new ToDo(trimmedCommand));
+            throw new IllegalArgumentException("I'm sorry, but I don't know what that means :-(");
         }
     }
 
@@ -42,7 +42,7 @@ public class Parser {
             int taskIndex = Integer.parseInt(command.substring(COMMAND_MARK.length()).trim());
             return new MarkCommand(taskIndex);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid task number for mark command");
+            throw new IllegalArgumentException("OOPS!!! Please provide a valid task number for the mark command.");
         }
     }
 
@@ -51,14 +51,14 @@ public class Parser {
             int taskIndex = Integer.parseInt(command.substring(COMMAND_UNMARK.length()).trim());
             return new UnmarkCommand(taskIndex);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid task number for unmark command");
+            throw new IllegalArgumentException("OOPS!!! Please provide a valid task number for the unmark command.");
         }
     }
 
     private static Command parseTodoCommand(String command) {
         String description = command.substring(COMMAND_TODO.length()).trim();
         if (description.isEmpty()) {
-            throw new IllegalArgumentException("Todo description cannot be empty");
+            throw new IllegalArgumentException("OOPS!!! The description of a todo cannot be empty.");
         }
         return new AddCommand(new ToDo(description));
     }
@@ -68,17 +68,17 @@ public class Parser {
         int byIndex = remaining.indexOf(DELIMITER_BY);
         
         if (byIndex == -1) {
-            throw new IllegalArgumentException("Deadline command must include '/by' parameter");
+            throw new IllegalArgumentException("OOPS!!! The deadline command requires a '/by' parameter. Please specify when the task is due.");
         }
         
         String description = remaining.substring(0, byIndex).trim();
         String by = remaining.substring(byIndex + DELIMITER_BY.length()).trim();
         
         if (description.isEmpty()) {
-            throw new IllegalArgumentException("Deadline description cannot be empty");
+            throw new IllegalArgumentException("OOPS!!! The description of a deadline cannot be empty.");
         }
         if (by.isEmpty()) {
-            throw new IllegalArgumentException("Deadline 'by' parameter cannot be empty");
+            throw new IllegalArgumentException("OOPS!!! The '/by' parameter for deadline cannot be empty. Please specify when the task is due.");
         }
         
         return new AddCommand(new Deadline(description, by));
@@ -90,13 +90,13 @@ public class Parser {
         int toIndex = remaining.indexOf(DELIMITER_TO);
         
         if (fromIndex == -1) {
-            throw new IllegalArgumentException("Event command must include '/from' parameter");
+            throw new IllegalArgumentException("OOPS!!! The event command requires a '/from' parameter. Please specify when the event starts.");
         }
         if (toIndex == -1) {
-            throw new IllegalArgumentException("Event command must include '/to' parameter");
+            throw new IllegalArgumentException("OOPS!!! The event command requires a '/to' parameter. Please specify when the event ends.");
         }
         if (fromIndex >= toIndex) {
-            throw new IllegalArgumentException("'/from' must come before '/to' in event command");
+            throw new IllegalArgumentException("OOPS!!! The '/from' parameter must come before the '/to' parameter in event command.");
         }
         
         String description = remaining.substring(0, fromIndex).trim();
@@ -104,13 +104,13 @@ public class Parser {
         String to = remaining.substring(toIndex + DELIMITER_TO.length()).trim();
         
         if (description.isEmpty()) {
-            throw new IllegalArgumentException("Event description cannot be empty");
+            throw new IllegalArgumentException("OOPS!!! The description of an event cannot be empty.");
         }
         if (from.isEmpty()) {
-            throw new IllegalArgumentException("Event 'from' parameter cannot be empty");
+            throw new IllegalArgumentException("OOPS!!! The '/from' parameter for event cannot be empty. Please specify when the event starts.");
         }
         if (to.isEmpty()) {
-            throw new IllegalArgumentException("Event 'to' parameter cannot be empty");
+            throw new IllegalArgumentException("OOPS!!! The '/to' parameter for event cannot be empty. Please specify when the event ends.");
         }
         
         return new AddCommand(new Event(description, from, to));

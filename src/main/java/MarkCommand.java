@@ -7,11 +7,7 @@ public class MarkCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, UI ui) {
-        try {
-            Task task = tasks.markTaskDone(taskIndex);
-            ui.showTaskMarkedDone(task);
-        } catch (IndexOutOfBoundsException e) {
-            ui.showError("Invalid task number: " + taskIndex);
-        }
+        Task task = tasks.markTaskDone(taskIndex);
+        ui.showTaskMarkedDone(task);
     }
 }

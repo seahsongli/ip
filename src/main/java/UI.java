@@ -73,7 +73,7 @@ public class UI {
 
     public void showError(String error) {
         System.out.println(DIVIDER);
-        System.out.println(" Error: " + error);
+        System.out.println(" " + error);
         System.out.println(DIVIDER);
     }
 
