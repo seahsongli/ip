@@ -19,7 +19,7 @@ public class TaskList {
 
     public Task getTask(int index) {
         if (index < 0 || index >= tasks.size()) {
-            throw new IndexOutOfBoundsException("Invalid task index: " + index);
+            throw new IndexOutOfBoundsException("OOPS!!! Task number " + (index + 1) + " does not exist. Please check your task list.");
         }
         return tasks.get(index);
     }

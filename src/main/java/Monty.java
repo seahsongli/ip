@@ -17,7 +17,7 @@ public class Monty {
                 Command command = Parser.parse(fullCommand);
                 command.execute(tasks, ui);
                 isExit = command.isExit();
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
                 ui.showError(e.getMessage());
             } catch (Exception e) {
                 ui.showError("An unexpected error occurred: " + e.getMessage());
