@@ -1,20 +1,19 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TaskList {
-
-    
     private final List<Task> tasks;
+    private final Storage storage;
 
     public TaskList() {
         this.tasks = new ArrayList<>();
+        this.storage = new Storage();
     }
 
-    public void addTask(Task task) {
-        if (task == null) {
-            throw new IllegalArgumentException("Task cannot be null");
-        }
-        tasks.add(task);
+    public TaskList(Storage storage) {
+        this.tasks = new ArrayList<>();
+        this.storage = storage;
     }
 
     public Task getTask(int index) {
@@ -36,21 +35,62 @@ public class TaskList {
         return new ArrayList<>(tasks);
     }
 
-    public Task markTaskDone(int index) {
-        Task task = getTask(index - 1);
-        task.markDone();
-        return task;
-    }
-
     public Task markTaskNotDone(int index) {
         Task task = getTask(index - 1);
         task.markNotDone();
+        saveTasks();
         return task;
     }
 
+    /**
+     * Loads tasks from storage
+     */
+    public void loadTasks() {
+        List<Task> loadedTasks = storage.loadTasks();
+        tasks.clear();
+        tasks.addAll(loadedTasks);
+    }
+
+    /**
+     * Saves tasks to storage
+     */
+    private void saveTasks() {
+        try {
+            storage.saveTasks(tasks);
+        } catch (IOException e) {
+            System.err.println("Error saving tasks: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Adds a task and saves to storage
+     */
+    public void addTask(Task task) {
+        if (task == null) {
+            throw new IllegalArgumentException("Task cannot be null");
+        }
+        tasks.add(task);
+        saveTasks();
+    }
+
+    /**
+     * Marks a task as done and saves to storage
+     */
+    public Task markTaskDone(int index) {
+        Task task = getTask(index - 1);
+        task.markDone();
+        saveTasks();
+        return task;
+    }
+
+    /**
+     * Deletes a task and saves to storage
+     */
     public Task deleteTask(int index) {
         Task task = getTask(index - 1);
         tasks.remove(index - 1);
+        saveTasks();
         return task;
     }
+
 }
