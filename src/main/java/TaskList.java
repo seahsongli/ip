@@ -47,4 +47,10 @@ public class TaskList {
         task.markNotDone();
         return task;
     }
+
+    public Task deleteTask(int index) {
+        Task task = getTask(index - 1);
+        tasks.remove(index - 1);
+        return task;
+    }
 }

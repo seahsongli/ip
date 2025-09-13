@@ -3,6 +3,7 @@ public class Parser {
     private static final String COMMAND_LIST = "list";
     private static final String COMMAND_MARK = "mark ";
     private static final String COMMAND_UNMARK = "unmark ";
+    private static final String COMMAND_DELETE = "delete ";
     private static final String COMMAND_TODO = "todo ";
     private static final String COMMAND_DEADLINE = "deadline ";
     private static final String COMMAND_EVENT = "event ";
@@ -26,6 +27,8 @@ public class Parser {
             return parseMarkCommand(trimmedCommand);
         } else if (trimmedCommand.startsWith(COMMAND_UNMARK)) {
             return parseUnmarkCommand(trimmedCommand);
+        } else if (trimmedCommand.startsWith(COMMAND_DELETE)) {
+            return parseDeleteCommand(trimmedCommand);
         } else if (trimmedCommand.startsWith(COMMAND_TODO)) {
             return parseTodoCommand(trimmedCommand);
         } else if (trimmedCommand.startsWith(COMMAND_DEADLINE)) {
@@ -52,6 +55,15 @@ public class Parser {
             return new UnmarkCommand(taskIndex);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("OOPS!!! Please provide a valid task number for the unmark command.");
+        }
+    }
+
+    private static Command parseDeleteCommand(String command) {
+        try {
+            int taskIndex = Integer.parseInt(command.substring(COMMAND_DELETE.length()).trim());
+            return new DeleteCommand(taskIndex);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("OOPS!!! Please provide a valid task number for the delete command.");
         }
     }
 
