@@ -5,6 +5,8 @@ public class Monty {
     public Monty() {
         this.ui = new UI();
         this.tasks = new TaskList();
+        // Load existing tasks from storage
+        tasks.loadTasks();
     }
 
     public void run() {

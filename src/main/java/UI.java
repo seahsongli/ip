@@ -71,6 +71,14 @@ public class UI {
         System.out.println(DIVIDER);
     }
 
+    public void showTaskDeleted(Task task, int remainingTasks) {
+        System.out.println(DIVIDER);
+        System.out.println(" Noted. I've removed this task:");
+        System.out.println("   " + task);
+        System.out.println(" Now you have " + remainingTasks + " tasks in the list.");
+        System.out.println(DIVIDER);
+    }
+
     public void showError(String error) {
         System.out.println(DIVIDER);
         System.out.println(" " + error);
