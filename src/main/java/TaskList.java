@@ -98,4 +98,30 @@ public class TaskList {
         return task;
     }
 
+    /**
+     * Finds tasks that contain the given keyword in their description
+     */
+    public TaskList findTasks(String keyword) {
+        TaskList matchingTasks = new TaskList();
+        String searchKeyword = keyword.toLowerCase();
+        
+        for (Task task : tasks) {
+            if (task.getDescription().toLowerCase().contains(searchKeyword)) {
+                matchingTasks.addTaskDirectly(task);
+            }
+        }
+        
+        return matchingTasks;
+    }
+
+    /**
+     * Helper method to add tasks directly without saving to storage
+     * Used internally by findTasks method
+     */
+    private void addTaskDirectly(Task task) {
+        if (task != null) {
+            tasks.add(task);
+        }
+    }
+
 }

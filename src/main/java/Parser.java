@@ -4,6 +4,7 @@ public class Parser {
     private static final String COMMAND_MARK = "mark ";
     private static final String COMMAND_UNMARK = "unmark ";
     private static final String COMMAND_DELETE = "delete ";
+    private static final String COMMAND_FIND = "find ";
     private static final String COMMAND_TODO = "todo ";
     private static final String COMMAND_DEADLINE = "deadline ";
     private static final String COMMAND_EVENT = "event ";
@@ -29,6 +30,8 @@ public class Parser {
             return parseUnmarkCommand(trimmedCommand);
         } else if (trimmedCommand.startsWith(COMMAND_DELETE)) {
             return parseDeleteCommand(trimmedCommand);
+        } else if (trimmedCommand.startsWith(COMMAND_FIND)) {
+            return parseFindCommand(trimmedCommand);
         } else if (trimmedCommand.startsWith(COMMAND_TODO)) {
             return parseTodoCommand(trimmedCommand);
         } else if (trimmedCommand.startsWith(COMMAND_DEADLINE)) {
@@ -65,6 +68,14 @@ public class Parser {
         } catch (NumberFormatException e) {
             throw new MontyException("OOPS!!! Please provide a valid task number for the delete command.");
         }
+    }
+
+    private static Command parseFindCommand(String command) throws MontyException {
+        String keyword = command.substring(COMMAND_FIND.length()).trim();
+        if (keyword.isEmpty()) {
+            throw new MontyException("OOPS!!! The search keyword cannot be empty.");
+        }
+        return new FindCommand(keyword);
     }
 
     private static Command parseTodoCommand(String command) throws MontyException {

@@ -97,6 +97,23 @@ public class UI {
         showMessage("Error loading tasks from file. Starting with an empty task list.");
     }
 
+    public void showFoundTasks(TaskList matchingTasks, String keyword) {
+        System.out.println(DIVIDER);
+        if (matchingTasks.isEmpty()) {
+            System.out.println(" No tasks found containing the keyword: \"" + keyword + "\"");
+        } else {
+            System.out.println(" Here are the matching tasks in your list:");
+            for (int i = 0; i < matchingTasks.getSize(); i++) {
+                try {
+                    System.out.println(" " + (i + 1) + "." + matchingTasks.getTask(i));
+                } catch (MontyException e) {
+                    System.out.println(" " + (i + 1) + ". [Error loading task: " + e.getMessage() + "]");
+                }
+            }
+        }
+        System.out.println(DIVIDER);
+    }
+
     public void close() {
         scanner.close();
     }
