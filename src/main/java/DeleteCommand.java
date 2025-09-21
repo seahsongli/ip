@@ -6,7 +6,7 @@ public class DeleteCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, UI ui) {
+    public void execute(TaskList tasks, UI ui, Storage storage) throws MontyException {
         Task task = tasks.deleteTask(taskIndex);
         ui.showTaskDeleted(task, tasks.getSize());
     }

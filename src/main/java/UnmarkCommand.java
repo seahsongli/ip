@@ -6,7 +6,7 @@ public class UnmarkCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, UI ui) {
+    public void execute(TaskList tasks, UI ui, Storage storage) throws MontyException {
         Task task = tasks.markTaskNotDone(taskIndex);
         ui.showTaskMarkedNotDone(task);
     }

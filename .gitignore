@@ -17,4 +17,9 @@ bin/
 /text-ui-test/ACTUAL.TXT
 text-ui-test/EXPECTED-UNIX.TXT
 
-src/main/java/data/duke.txt
+src/main/java/data/
+
+*.jar
+src/main/java/META-INF/
+src/main/java/out
+src/main/java/.idea/

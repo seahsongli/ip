@@ -6,7 +6,7 @@ public class MarkCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, UI ui) {
+    public void execute(TaskList tasks, UI ui, Storage storage) throws MontyException {
         Task task = tasks.markTaskDone(taskIndex);
         ui.showTaskMarkedDone(task);
     }

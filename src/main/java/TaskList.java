@@ -16,9 +16,14 @@ public class TaskList {
         this.storage = storage;
     }
 
-    public Task getTask(int index) {
+    public TaskList(List<Task> initialTasks) {
+        this.tasks = new ArrayList<>(initialTasks);
+        this.storage = new Storage();
+    }
+
+    public Task getTask(int index) throws MontyException {
         if (index < 0 || index >= tasks.size()) {
-            throw new IndexOutOfBoundsException("OOPS!!! Task number " + (index + 1) + " does not exist. Please check your task list.");
+            throw new MontyException("OOPS!!! Task number " + (index + 1) + " does not exist. Please check your task list.");
         }
         return tasks.get(index);
     }
@@ -35,7 +40,7 @@ public class TaskList {
         return new ArrayList<>(tasks);
     }
 
-    public Task markTaskNotDone(int index) {
+    public Task markTaskNotDone(int index) throws MontyException {
         Task task = getTask(index - 1);
         task.markNotDone();
         saveTasks();
@@ -76,7 +81,7 @@ public class TaskList {
     /**
      * Marks a task as done and saves to storage
      */
-    public Task markTaskDone(int index) {
+    public Task markTaskDone(int index) throws MontyException {
         Task task = getTask(index - 1);
         task.markDone();
         saveTasks();
@@ -86,7 +91,7 @@ public class TaskList {
     /**
      * Deletes a task and saves to storage
      */
-    public Task deleteTask(int index) {
+    public Task deleteTask(int index) throws MontyException {
         Task task = getTask(index - 1);
         tasks.remove(index - 1);
         saveTasks();

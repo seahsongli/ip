@@ -6,7 +6,7 @@ public class AddCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, UI ui) {
+    public void execute(TaskList tasks, UI ui, Storage storage) throws MontyException {
         tasks.addTask(task);
         ui.showTaskAdded(task, tasks.getSize());
     }

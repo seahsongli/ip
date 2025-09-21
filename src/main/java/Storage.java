@@ -17,6 +17,10 @@ public class Storage {
         this.filePath = DATA_DIR + File.separator + DATA_FILE;
     }
 
+    public Storage(String filePath) {
+        this.filePath = filePath;
+    }
+
     /**
      * Creates the data directory if it doesn't exist
      */
@@ -25,6 +29,14 @@ public class Storage {
         if (!Files.exists(dataDirPath)) {
             Files.createDirectories(dataDirPath);
         }
+    }
+
+    /**
+     * Loads tasks from the data file
+     * Returns empty list if file doesn't exist or is corrupted
+     */
+    public List<Task> load() throws MontyException {
+        return loadTasks();
     }
 
     /**

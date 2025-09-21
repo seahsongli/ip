@@ -51,7 +51,11 @@ public class UI {
         } else {
             System.out.println(" Here are the tasks in your list:");
             for (int i = 0; i < tasks.getSize(); i++) {
-                System.out.println(" " + (i + 1) + "." + tasks.getTask(i));
+                try {
+                    System.out.println(" " + (i + 1) + "." + tasks.getTask(i));
+                } catch (MontyException e) {
+                    System.out.println(" " + (i + 1) + ". [Error loading task: " + e.getMessage() + "]");
+                }
             }
         }
         System.out.println(DIVIDER);
@@ -85,7 +89,14 @@ public class UI {
         System.out.println(DIVIDER);
     }
 
- 
+    public void showLine() {
+        System.out.println(DIVIDER);
+    }
+
+    public void showLoadingError() {
+        showMessage("Error loading tasks from file. Starting with an empty task list.");
+    }
+
     public void close() {
         scanner.close();
     }

@@ -1,35 +1,38 @@
 public class Monty {
-    private final UI ui;
-    private final TaskList tasks;
+    private Storage storage;
+    private TaskList tasks;
+    private UI ui;
 
-    public Monty() {
-        this.ui = new UI();
-        this.tasks = new TaskList();
-        // Load existing tasks from storage
-        tasks.loadTasks();
+    public Monty(String filePath) {
+        ui = new UI();
+        storage = new Storage(filePath);
+        try {
+            tasks = new TaskList(storage.load());
+        } catch (MontyException e) {
+            ui.showLoadingError();
+            tasks = new TaskList();
+        }
     }
 
     public void run() {
         ui.showWelcome();
-        
         boolean isExit = false;
         while (!isExit) {
             try {
                 String fullCommand = ui.readCommand();
-                Command command = Parser.parse(fullCommand);
-                command.execute(tasks, ui);
-                isExit = command.isExit();
-            } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+                ui.showLine(); // show the divider line ("_______")
+                Command c = Parser.parse(fullCommand);
+                c.execute(tasks, ui, storage);
+                isExit = c.isExit();
+            } catch (MontyException e) {
                 ui.showError(e.getMessage());
-            } catch (Exception e) {
-                ui.showError("An unexpected error occurred: " + e.getMessage());
+            } finally {
+                ui.showLine();
             }
         }
-        
-        ui.close();
     }
 
     public static void main(String[] args) {
-        new Monty().run();
+        new Monty("data/tasks.txt").run();
     }
 }
