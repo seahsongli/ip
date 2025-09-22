@@ -1,3 +1,7 @@
+/**
+ * Parses user input commands and converts them into appropriate Command objects.
+ * Handles validation and parsing of all supported command types.
+ */
 public class Parser {
     private static final String COMMAND_BYE = "bye";
     private static final String COMMAND_LIST = "list";
@@ -13,6 +17,13 @@ public class Parser {
     private static final String DELIMITER_FROM = "/from ";
     private static final String DELIMITER_TO = "/to ";
 
+    /**
+     * Parses a user command string and returns the corresponding Command object.
+     * 
+     * @param fullCommand the full command string entered by the user
+     * @return the appropriate Command object for the given command
+     * @throws MontyException if the command is invalid or empty
+     */
     public static Command parse(String fullCommand) throws MontyException {
         if (fullCommand == null || fullCommand.trim().isEmpty()) {
             throw new MontyException("Command cannot be empty");
@@ -43,6 +54,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a mark command and returns a MarkCommand object.
+     * 
+     * @param command the mark command string
+     * @return a MarkCommand object
+     * @throws MontyException if the command format is invalid
+     */
     private static Command parseMarkCommand(String command) throws MontyException {
         try {
             int taskIndex = Integer.parseInt(command.substring(COMMAND_MARK.length()).trim());
@@ -52,6 +70,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses an unmark command and returns an UnmarkCommand object.
+     * 
+     * @param command the unmark command string
+     * @return an UnmarkCommand object
+     * @throws MontyException if the command format is invalid
+     */
     private static Command parseUnmarkCommand(String command) throws MontyException {
         try {
             int taskIndex = Integer.parseInt(command.substring(COMMAND_UNMARK.length()).trim());
@@ -61,6 +86,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a delete command and returns a DeleteCommand object.
+     * 
+     * @param command the delete command string
+     * @return a DeleteCommand object
+     * @throws MontyException if the command format is invalid
+     */
     private static Command parseDeleteCommand(String command) throws MontyException {
         try {
             int taskIndex = Integer.parseInt(command.substring(COMMAND_DELETE.length()).trim());
@@ -70,6 +102,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a find command and returns a FindCommand object.
+     * 
+     * @param command the find command string
+     * @return a FindCommand object
+     * @throws MontyException if the command format is invalid
+     */
     private static Command parseFindCommand(String command) throws MontyException {
         String keyword = command.substring(COMMAND_FIND.length()).trim();
         if (keyword.isEmpty()) {
@@ -78,6 +117,13 @@ public class Parser {
         return new FindCommand(keyword);
     }
 
+    /**
+     * Parses a todo command and returns an AddCommand with a ToDo task.
+     * 
+     * @param command the todo command string
+     * @return an AddCommand object containing a ToDo task
+     * @throws MontyException if the command format is invalid
+     */
     private static Command parseTodoCommand(String command) throws MontyException {
         String description = command.substring(COMMAND_TODO.length()).trim();
         if (description.isEmpty()) {
@@ -86,6 +132,13 @@ public class Parser {
         return new AddCommand(new ToDo(description));
     }
 
+    /**
+     * Parses a deadline command and returns an AddCommand with a Deadline task.
+     * 
+     * @param command the deadline command string
+     * @return an AddCommand object containing a Deadline task
+     * @throws MontyException if the command format is invalid
+     */
     private static Command parseDeadlineCommand(String command) throws MontyException {
         String remaining = command.substring(COMMAND_DEADLINE.length()).trim();
         int byIndex = remaining.indexOf(DELIMITER_BY);
@@ -107,6 +160,13 @@ public class Parser {
         return new AddCommand(new Deadline(description, by));
     }
 
+    /**
+     * Parses an event command and returns an AddCommand with an Event task.
+     * 
+     * @param command the event command string
+     * @return an AddCommand object containing an Event task
+     * @throws MontyException if the command format is invalid
+     */
     private static Command parseEventCommand(String command) throws MontyException {
         String remaining = command.substring(COMMAND_EVENT.length()).trim();
         int fromIndex = remaining.indexOf(DELIMITER_FROM);

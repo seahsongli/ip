@@ -8,21 +8,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Handles the persistence of tasks to and from the file system.
+ * Provides methods to load tasks from a file and save tasks to a file.
+ * Supports automatic directory creation and error handling for corrupted data.
+ */
 public class Storage {
     private static final String DATA_DIR = "data";
     private static final String DATA_FILE = "duke.txt";
     private final String filePath;
 
+    /**
+     * Constructs a Storage instance with the default file path.
+     * The default path is "data/duke.txt".
+     */
     public Storage() {
         this.filePath = DATA_DIR + File.separator + DATA_FILE;
     }
 
+    /**
+     * Constructs a Storage instance with the specified file path.
+     * 
+     * @param filePath the path to the file where tasks are stored
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
     /**
-     * Creates the data directory if it doesn't exist
+     * Creates the data directory if it doesn't exist.
+     * 
+     * @throws IOException if the directory creation fails
      */
     private void createDataDirectoryIfNeeded() throws IOException {
         Path dataDirPath = Paths.get(DATA_DIR);
@@ -32,16 +48,20 @@ public class Storage {
     }
 
     /**
-     * Loads tasks from the data file
-     * Returns empty list if file doesn't exist or is corrupted
+     * Loads tasks from the data file.
+     * 
+     * @return a list of tasks loaded from the file
+     * @throws MontyException if there is an error loading tasks
      */
     public List<Task> load() throws MontyException {
         return loadTasks();
     }
 
     /**
-     * Loads tasks from the data file
-     * Returns empty list if file doesn't exist or is corrupted
+     * Loads tasks from the data file.
+     * Returns empty list if file doesn't exist or is corrupted.
+     * 
+     * @return a list of tasks loaded from the file (empty if file doesn't exist)
      */
     public List<Task> loadTasks() {
         List<Task> tasks = new ArrayList<>();
@@ -74,7 +94,10 @@ public class Storage {
     }
 
     /**
-     * Saves tasks to the data file
+     * Saves tasks to the data file.
+     * 
+     * @param tasks the list of tasks to save
+     * @throws IOException if there is an error writing to the file
      */
     public void saveTasks(List<Task> tasks) throws IOException {
         createDataDirectoryIfNeeded();
@@ -87,10 +110,15 @@ public class Storage {
     }
 
     /**
-     * Parses a task from a file line
-     * Format: T | 1 | read book
-     * Format: D | 0 | return book | June 6th
-     * Format: E | 0 | project meeting | Aug 6th 2pm | 4pm
+     * Parses a task from a file line.
+     * Expected formats:
+     * - ToDo: T | 1 | read book
+     * - Deadline: D | 0 | return book | June 6th
+     * - Event: E | 0 | project meeting | Aug 6th 2pm | 4pm
+     * 
+     * @param line the line from the file to parse
+     * @return the parsed task
+     * @throws IllegalArgumentException if the line format is invalid
      */
     private Task parseTaskFromLine(String line) {
         String[] parts = line.split(" \\| ");
@@ -128,10 +156,14 @@ public class Storage {
     }
 
     /**
-     * Converts a task to file string format
-     * Format: T | 1 | read book
-     * Format: D | 0 | return book | June 6th
-     * Format: E | 0 | project meeting | Aug 6th 2pm | 4pm
+     * Converts a task to file string format.
+     * Output formats:
+     * - ToDo: T | 1 | read book
+     * - Deadline: D | 0 | return book | June 6th
+     * - Event: E | 0 | project meeting | Aug 6th 2pm | 4pm
+     * 
+     * @param task the task to convert to string format
+     * @return the formatted string representation of the task
      */
     private String taskToFileString(Task task) {
         StringBuilder sb = new StringBuilder();

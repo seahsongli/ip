@@ -1,8 +1,18 @@
+/**
+ * Monty is a personal task management chatbot that helps users manage their tasks.
+ * It supports adding, listing, marking, deleting, and finding tasks.
+ * Tasks can be of three types: ToDo, Deadline, or Event.
+ */
 public class Monty {
     private Storage storage;
     private TaskList tasks;
     private UI ui;
 
+    /**
+     * Constructs a new Monty chatbot instance.
+     * 
+     * @param filePath the path to the file where tasks are stored
+     */
     public Monty(String filePath) {
         ui = new UI();
         storage = new Storage(filePath);
@@ -14,6 +24,10 @@ public class Monty {
         }
     }
 
+    /**
+     * Runs the main chatbot loop, processing user commands until exit.
+     * Displays welcome message and handles all user interactions.
+     */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;
@@ -32,6 +46,11 @@ public class Monty {
         }
     }
 
+    /**
+     * Main entry point for the Monty chatbot application.
+     * 
+     * @param args command line arguments (not used)
+     */
     public static void main(String[] args) {
         new Monty("data/tasks.txt").run();
     }
